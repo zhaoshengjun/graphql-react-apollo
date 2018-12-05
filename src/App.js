@@ -21,7 +21,9 @@ class App extends Component {
             }
           `}
         >
-          {({ data }) => {
+          {({ data, loading, error }) => {
+            if (loading) return <p>Loading...</p>;
+            if (error) return <p>Something went wrong</p>;
             if (data.recipes === undefined) return null;
             return (
               <ul>
