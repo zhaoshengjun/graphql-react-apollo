@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ApolloClient from "apollo-boost";
-import { ApolloProvider, ApolloConsumer } from "react-apollo";
+import { ApolloProvider, Query } from "react-apollo";
 import gql from "graphql-tag";
 
 const client = new ApolloClient({
@@ -11,24 +11,27 @@ class App extends Component {
   render() {
     return (
       <ApolloProvider client={client}>
-        <div>Hello World</div>;
-        <ApolloConsumer>
-          {client => {
-            client
-              .query({
-                query: gql`
-                  {
-                    recipes {
-                      id
-                      title
-                    }
-                  }
-                `
-              })
-              .then(result => console.log(result));
-            return null;
+        <Query
+          query={gql`
+            {
+              recipes {
+                id
+                title
+              }
+            }
+          `}
+        >
+          {({ data }) => {
+            if (data.recipes === undefined) return null;
+            return (
+              <ul>
+                {data.recipes.map(({ id, title }) => (
+                  <li key={id}>{title}</li>
+                ))}
+              </ul>
+            );
           }}
-        </ApolloConsumer>
+        </Query>
       </ApolloProvider>
     );
   }
