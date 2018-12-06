@@ -5,14 +5,26 @@ const recipes = [
   { id: 2, title: "Egg Roll", vegetarian: false }
 ];
 
+const findNextId = () => {
+  return parseInt(recipes.length + 1);
+};
+
 const typeDefs = gql`
   type Recipe {
     id: Int
     title: String
     vegetarian: Boolean
   }
+
+  input RecipeInput {
+    title: String!
+    vegetarian: Boolean!
+  }
   type Query {
     recipes(vegetarian: Boolean): [Recipe]
+  }
+  type Mutation {
+    addRecipe(recipe: RecipeInput): Recipe
   }
 `;
 const resolvers = {
@@ -24,6 +36,18 @@ const resolvers = {
       } else {
         return recipes.filter(recipe => recipe.vegetarian === vegetarian);
       }
+    }
+  },
+  Mutation: {
+    addRecipe: (parent, args, context, info) => {
+      const { title, vegetarian } = args.recipe;
+      const recipe = {
+        id: findNextId(),
+        title,
+        vegetarian
+      };
+      recipes.push(recipe);
+      return recipe;
     }
   }
 };
