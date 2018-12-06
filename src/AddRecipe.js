@@ -1,4 +1,15 @@
 import React, { Component } from "react";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+
+const addRecipeMutation = gql`
+  mutation addRecipe($recipe: RecipeInput!) {
+    addRecipe(recipe: $recipe) {
+      id
+      title
+    }
+  }
+`;
 
 export default class AddRecipe extends Component {
   state = {
@@ -20,32 +31,46 @@ export default class AddRecipe extends Component {
 
   render() {
     return (
-      <form
-        onSubmit={evt => {
-          evt.preventDefault();
-          this.resetFields();
-        }}
-      >
-        <label>
-          <span>Title</span>
-          <input
-            type="text"
-            value={this.state.title}
-            onChange={this.updateTitle}
-          />
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={this.state.vegetarian}
-            onChange={this.updateVegetarian}
-          />
-          <span>vegetarian</span>
-        </label>
-        <div>
-          <button>Add Recipe</button>
-        </div>
-      </form>
+      <Mutation mutation={addRecipeMutation}>
+        {(addRecipe, { loading, error }) => (
+          <form
+            onSubmit={evt => {
+              evt.preventDefault();
+              this.resetFields();
+              addRecipe({
+                variables: {
+                  recipe: {
+                    title: this.state.title,
+                    vegetarian: this.state.vegetarian
+                  }
+                }
+              });
+            }}
+          >
+            <label>
+              <span>Title</span>
+              <input
+                type="text"
+                value={this.state.title}
+                onChange={this.updateTitle}
+              />
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={this.state.vegetarian}
+                onChange={this.updateVegetarian}
+              />
+              <span>vegetarian</span>
+            </label>
+            <div>
+              <button>Add Recipe</button>
+              {loading && <p>Loading</p>}
+              {error && <p>Something went wrong :(, please try again</p>}
+            </div>
+          </form>
+        )}
+      </Mutation>
     );
   }
 }
