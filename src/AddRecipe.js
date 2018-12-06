@@ -31,7 +31,21 @@ export default class AddRecipe extends Component {
 
   render() {
     return (
-      <Mutation mutation={addRecipeMutation}>
+      <Mutation
+        mutation={addRecipeMutation}
+        refetchQueries={[
+          {
+            query: gql`
+              query recipes {
+                recipes {
+                  id
+                  title
+                }
+              }
+            `
+          }
+        ]}
+      >
         {(addRecipe, { loading, error }) => (
           <form
             onSubmit={evt => {
