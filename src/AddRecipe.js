@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import recipesQuery from "./recipesQuery";
 
 const addRecipeMutation = gql`
   mutation addRecipe($recipe: RecipeInput!) {
@@ -35,14 +36,12 @@ export default class AddRecipe extends Component {
         mutation={addRecipeMutation}
         refetchQueries={[
           {
-            query: gql`
-              query recipes {
-                recipes {
-                  id
-                  title
-                }
-              }
-            `
+            query: recipesQuery,
+            variables: { vegetarian: true }
+          },
+          {
+            query: recipesQuery,
+            variables: { vegetarian: false }
           }
         ]}
       >
