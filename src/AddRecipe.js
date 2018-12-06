@@ -44,6 +44,7 @@ export default class AddRecipe extends Component {
             variables: { vegetarian: false }
           }
         ]}
+        awaitRefetchQueries={true}
       >
         {(addRecipe, { loading, error }) => (
           <form
