@@ -1,6 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { Query } from "react-apollo";
+import gql from "graphql-tag";
 import recipesQuery from "./recipesQuery";
+
+const updateRecipeStarredMutation = gql`
+  mutation updateRecipeStarred($id: Int!, $isStarred: Boolean!) {
+    updateRecipeStarred(id: $id, isStarred: $isStarred) @client
+  }
+`;
 
 export default class Recipes extends Component {
   state = {
