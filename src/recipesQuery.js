@@ -5,6 +5,7 @@ const recipesQuery = gql`
     recipes(vegetarian: $vegetarian) {
       id
       title
+      isStarred @client
     }
   }
 `;
