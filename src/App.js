@@ -13,7 +13,10 @@ const resolvers = {
 };
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000"
+  uri: "http://localhost:4000",
+  clientState: {
+    resolvers
+  }
 });
 
 class App extends Component {
