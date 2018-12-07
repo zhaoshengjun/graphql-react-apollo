@@ -30,7 +30,11 @@ export default class Recipes extends Component {
           />
           <span>Vegetarian</span>
         </label>
-        <Query query={recipesQuery} variables={{ vegetarian }}>
+        <Query
+          query={recipesQuery}
+          variables={{ vegetarian }}
+          pollInterval={3000}
+        >
           {({ data, loading, error, refetch }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Something went wrong</p>;
