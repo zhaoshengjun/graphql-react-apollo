@@ -6,8 +6,10 @@ import AddRecipe from "./AddRecipe";
 
 const resolvers = {
   Recipe: {
-    isStarred: () => {
-      return false;
+    isStarred: parent => {
+      const starredRecipes =
+        JSON.parse(localStorage.getItem("starredRecipes")) || [];
+      return starredRecipes.includes(parent.id);
     }
   },
   Mutation: {
