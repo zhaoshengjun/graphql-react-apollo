@@ -30,8 +30,13 @@ export default class Recipes extends Component {
             if (data.recipes === undefined) return null;
             return (
               <ul>
-                {data.recipes.map(({ id, title }) => (
-                  <li key={id}>{title}</li>
+                {data.recipes.map(({ id, title, isStarred }) => (
+                  <li key={id}>
+                    {title}
+                    <span style={{ color: isStarred ? "orange" : "grey" }}>
+                      ★
+                    </span>
+                  </li>
                 ))}
               </ul>
             );
